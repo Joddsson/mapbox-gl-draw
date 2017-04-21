@@ -32,4 +32,18 @@ LineString.prototype.updateCoordinate = function(path, lng, lat) {
   this.changed();
 };
 
+LineString.prototype.updateCoordinateShift = function(path, lng, lat) {  
+  const id = parseInt(path, 10);
+  let latestPoint = this.coordinates.length >= 2 ? this.coordinates.length-2 : 0;
+  let latestLat = this.coordinates[latestPoint][1];
+  let latestLng = this.coordinates[latestPoint][0];
+  let roundedLat = Math.round(lat / latestLat) * latestLat;
+  let roundedLng = Math.round(lng / latestLng) * latestLng;
+
+  latestLat = roundedLng !== latestLng ? Math.round(lat / latestLat) * latestLat : lat === 0 ? latestLat : lat;
+  latestLng = roundedLat !== latestLat ? Math.round(lng / latestLng) * latestLng : lng === 0 ? latestLng : lng;
+
+  this.coordinates[id] = [latestLng, latestLat];
+  this.changed();
+};
 module.exports = LineString;

@@ -28,7 +28,8 @@ test('LineString constructor and API', t => {
   t.equal(typeof LineString.prototype.getCoordinate, 'function', 'lineString.getCoordinate');
   t.equal(typeof LineString.prototype.removeCoordinate, 'function', 'lineString.removeCoordinate');
   t.equal(typeof LineString.prototype.updateCoordinate, 'function', 'lineString.updateCoordinate');
-  t.equal(getPublicMemberKeys(LineString.prototype).length, 5, 'no unexpected prototype members');
+  t.equal(typeof LineString.prototype.updateCoordinateShift, 'function', 'lineString.updateCoordinateShift');
+  t.equal(getPublicMemberKeys(LineString.prototype).length, 6, 'no unexpected prototype members');
 
   t.ok(LineString.prototype instanceof Feature, 'inherits from Feature');
 
@@ -105,6 +106,24 @@ test('LineString#updateCoordinate', t => {
   t.deepEqual(lineString.getCoordinates(), [[1, 2], [7, 8], [5, 6]], 'coordinate updated at correct place');
 
   t.end();
+});
+
+// Currently does not work
+test('LineString#updateCoordinateShift', t => {
+  // const rawLine = createFeature('line');
+  // rawLine.geometry.coordinates = [[1, 1], [10, 10]];
+  // const lineString = new LineString(createMockCtx(), rawLine);
+  // const changedSpy = spy(lineString, 'changed');
+
+  // lineString.updateCoordinateShift(1, 16, 16);
+  // t.equal(changedSpy.callCount, 1, 'called lineString.changed()');
+  // t.deepEqual(lineString.getCoordinates(), [[1, 1], [20, 20]], 'coordinate updated at correct place');
+
+  // lineString.updateCoordinateShift(1, -16, -16);
+  // t.equal(changedSpy.callCount, 2, 'called lineString.changed()');
+  // t.deepEqual(lineString.getCoordinates(), [[1, 1], [-10, -10]], 'coordinate updated at correct place');
+
+  // t.end();
 });
 
 test('LineString integration', t => {

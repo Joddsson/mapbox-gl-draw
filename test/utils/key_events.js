@@ -19,3 +19,7 @@ export const startPolygonEvent = createSyntheticEvent('keydown', {
 export const escapeEvent = createSyntheticEvent('keyup', {
   keyCode: 27
 });
+
+export const shiftEvent = createSyntheticEvent('keydown', {
+  shiftKey: true
+});

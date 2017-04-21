@@ -62,7 +62,13 @@ module.exports = function(ctx, opts) {
       ctx.ui.setActiveButton(Constants.types.LINE);
 
       this.on('mousemove', CommonSelectors.true, (e) => {
-        line.updateCoordinate(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+        // If the user holds down the shift key while drawing we lock the line down at 10 deg increments.
+        if (CommonSelectors.isShiftDown(e)) {
+          line.updateCoordinateShift(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+        } else {
+          line.updateCoordinate(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+        }
+
         if (CommonSelectors.isVertex(e)) {
           ctx.ui.queueMapClasses({ mouse: Constants.cursors.POINTER });
         }
@@ -76,10 +82,18 @@ module.exports = function(ctx, opts) {
       function clickAnywhere(e) {
         if (currentVertexPosition > 0 && isEventAtCoordinates(e, line.coordinates[currentVertexPosition - 1]) ||
             direction === 'backwards' && isEventAtCoordinates(e, line.coordinates[currentVertexPosition + 1])) {
+
           return ctx.events.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [line.id] });
         }
         ctx.ui.queueMapClasses({ mouse: Constants.cursors.ADD });
-        line.updateCoordinate(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+
+        // If the user holds down the shift key while drawing the coordinate will be set to the nearest ten.
+        if (CommonSelectors.isShiftDown(e)) {
+          line.updateCoordinateShift(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+        } else {
+          line.updateCoordinate(currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+        }
+
         if (direction === 'forward') {
           currentVertexPosition++;
         } else {

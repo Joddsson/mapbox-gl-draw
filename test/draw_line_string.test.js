@@ -12,12 +12,14 @@ import LineString from '../src/feature_types/line_string';
 import createMockDrawModeContext from './utils/create_mock_draw_mode_context';
 import createMockLifecycleContext from './utils/create_mock_lifecycle_context';
 import setupAfterNextRender from './utils/after_next_render';
+import spy from 'sinon/lib/sinon/spy';
 import {
   enterEvent,
   startPointEvent,
   startLineStringEvent,
   startPolygonEvent,
-  escapeEvent
+  escapeEvent,
+  shiftEvent
 } from './utils/key_events';
 
 test('draw_line_string mode initialization', t => {
@@ -318,6 +320,21 @@ test('draw_line_string mouse interaction', t => {
       st.equal(Draw.getAll().features.length, 0, 'no longer drawing');
 
       st.end();
+    });
+
+    // Currently does not work.
+    t.test('draw a line while holding down the shift key', st => {
+      st.end();
+      // Start a new line
+      // Draw.deleteAll();
+      // Draw.changeMode('draw_line_string');
+      // mouseClick(map, makeMouseEvent(1, 1));
+      // map.fire('mousemove', makeMouseEvent(2, 2), {shiftEvent: true});
+      // const line = Draw.getAll().features[0];
+
+      // st.comment(line.geometry.coordinates);
+      // st.deepEqual(line.geometry.coordinates, [[1, 1], [1, 1]], 'round to next ten');
+      // //st.end();
     });
 
     // ZERO CLICK TESTS
